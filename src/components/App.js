@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import ContactForm from './ContactsForm/ContactForm';
 import Filter from './Filter/Filter';
 import { ContactList } from './ContactsList/ContactList';
-import {Container} from './App.styled'
+import { Container } from './App.styled';
 
 class App extends Component {
   state = {
@@ -15,6 +15,20 @@ class App extends Component {
     ],
     filter: '',
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem('Contact');
+    const parseContacts = JSON.parse(contacts);
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState) {
+      localStorage.setItem('Contact', JSON.stringify(this.state.contacts));
+    }
+  }
 
   onSubmit = data => {
     console.log(data);
